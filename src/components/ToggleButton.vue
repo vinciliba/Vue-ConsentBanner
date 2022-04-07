@@ -1,0 +1,103 @@
+<template>
+	<label class="switch">
+		<span v-if="isActive" class="switch__label">Active</span>
+		<span v-if="! isActive" class="switch__label">Inactive</span>
+		<input type="checkbox" id="switch" checked v-model="checkedValue" @click="toggleButton">
+		<span class="slider round"></span>
+	</label>
+</template>
+<script>
+	export default {
+		data() {
+			return {
+				currentState: true
+			}
+		},
+		computed: {
+			isActive() {
+				return this.currentState;
+			},
+
+			checkedValue: {
+				get() {
+					return this.defaultState
+				},
+				set(newValue) {
+					this.currentState = newValue;
+				}
+			}
+		},
+
+		methods: {
+			toggleButton: function() {
+				this.$emit("toggle_callBack", !this.isActive);
+			},
+		}
+	}
+</script>
+
+<style scoped>
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 60px;
+		height: 34px;
+	}
+
+	.switch__label {
+		margin-left: 5rem;
+	}
+
+	.switch input {
+		opacity: 0;
+		width: 0;
+		height: 0;
+	}
+
+	.slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #FA2100;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+
+	.slider:before {
+		position: absolute;
+		content: "";
+		height: 26px;
+		width: 26px;
+		left: 4px;
+		bottom: 4px;
+		background-color: white;
+		-webkit-transition: .4s;
+		transition: .4s;
+	}
+
+	input:checked+.slider {
+		background-color: #3EE105;
+	}
+
+	input:focus+.slider {
+		box-shadow: 0 0 1px #3EE105;
+	}
+
+	input:checked+.slider:before {
+		-webkit-transform: translateX(26px);
+		-ms-transform: translateX(26px);
+		transform: translateX(26px);
+	}
+
+	/* Rounded sliders */
+	.slider.round {
+		border-radius: 34px;
+	}
+
+	.slider.round:before {
+		border-radius: 50%;
+	}
+</style>
